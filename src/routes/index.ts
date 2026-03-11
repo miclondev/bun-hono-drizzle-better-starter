@@ -1,9 +1,9 @@
-import { requireRole, verifyToken } from "@/middleware/auth";
-import { Router } from "express";
+import { Hono } from "hono";
 import todoRoutes from "./todo.routes";
 
-const router = Router();
+const routes = new Hono();
 
-router.use("/todo", todoRoutes);
+// Mount todo routes
+routes.route("/todo", todoRoutes);
 
-export default router;
+export default routes;

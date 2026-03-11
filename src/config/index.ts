@@ -7,9 +7,7 @@ dotenv.config();
 // Define the schema for environment variables
 const configSchema = Joi.object({
   // Server
-  NODE_ENV: Joi.string()
-    .valid("development", "production", "test")
-    .default("development"),
+  NODE_ENV: Joi.string().valid("development", "production", "test").default("development"),
   PORT: Joi.number().default(3000),
 
   // Database
@@ -19,7 +17,7 @@ const configSchema = Joi.object({
   DB_HOST: Joi.string().default("localhost"),
   DB_PORT: Joi.number().default(5432),
   DATABASE_URL: Joi.string().optional(),
-  
+
   // Connection Pool
   DB_POOL_MIN: Joi.number().default(2),
   DB_POOL_MAX: Joi.number().default(10),
@@ -40,9 +38,7 @@ const configSchema = Joi.object({
   AWS_SECRET_ACCESS_KEY: Joi.string().optional(),
 
   // Logging
-  LOG_LEVEL: Joi.string()
-    .valid("error", "warn", "info", "http", "debug")
-    .default("info"),
+  LOG_LEVEL: Joi.string().valid("error", "warn", "info", "http", "debug").default("info"),
 });
 
 // Map environment variables to config object

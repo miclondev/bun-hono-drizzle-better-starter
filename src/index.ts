@@ -1,65 +1,66 @@
-import { server } from "@/config";
-import routes from "@/routes";
 import { initDatabase } from "@db/config";
-import { standardLimiter } from "@middleware/rate-limit";
-import { requestLogger } from "@middleware/request-logger";
-import { errorHandler, notFoundHandler } from "@utils/error-handler";
-import { logger } from "@utils/logger";
-import { toNodeHandler } from "better-auth/node";
-import cors from "cors";
-import express, { Application } from "express";
-import helmet from "helmet";
-import { auth } from "./utils/auth";
+import { serve } from "@hono/node-server";
+import { Hono } from "hono";
+import { cors } from "hono/cors";
+import { secureHeaders } from "hono/secure-headers";
+import { server } from "@/config";
+import { standardLimiter } from "@/middleware/rate-limit";
+import { requestLogger } from "@/middleware/request-logger";
+import routes from "@/routes";
+import { auth } from "@/utils/auth";
+import { errorHandler, notFoundHandler } from "@/utils/error-handler";
+import { logger } from "@/utils/logger";
 
-// Config is already loaded in @/config
+const app = new Hono();
 
-// Express application
-const app: Application = express();
-const port = server.port;
-
-// Middleware
-app.use(helmet());
+// Security middleware
+app.use("*", secureHeaders());
 app.use(
+  "*",
   cors({
-    origin: ["http://localhost:3000"], // Replace with your frontend's origin
-    methods: ["GET", "POST", "PUT", "DELETE"], // Specify allowed HTTP methods
-    credentials: true, // Allow credentials (cookies, authorization headers, etc.)
+    origin: ["http://localhost:3000"],
+    credentials: true,
   })
 );
 
-app.all("/api/auth/*", toNodeHandler(auth));
+// Rate limiting
+app.use("*", standardLimiter);
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(requestLogger);
+// Request logging
+app.use("*", requestLogger);
 
-// Apply rate limiting to all requests
-app.use(standardLimiter);
+// Better-auth routes - using official Hono integration pattern
+app.on(["POST", "GET"], "/api/auth/*", (c) => {
+  return auth.handler(c.req.raw);
+});
 
 // API routes
-app.use("/api/v1", routes);
+app.route("/api/v1", routes);
 
-// Health check for load balancer
-app.get("/health", (req, res) => {
-  res.status(200).json({ status: "ok" });
+// Health check
+app.get("/health", (c) => {
+  return c.json({ status: "ok" });
 });
 
 // 404 handler
-app.use(notFoundHandler);
+app.notFound(notFoundHandler);
 
-// Global error handler
-app.use(errorHandler);
+// Error handler
+app.onError(errorHandler);
 
-// Start the server
+// Start server
 const startServer = async () => {
   try {
-    // Initialize database connection
     await initDatabase();
 
-    // Start listening for requests
-    app.listen(port, () => {
-      logger.info(`Server running on port ${port}`);
+    const port = server.port;
+
+    serve({
+      fetch: app.fetch,
+      port,
     });
+
+    logger.info(`Server running on port ${port}`);
   } catch (error) {
     logger.error("Failed to start server:", error);
     process.exit(1);
@@ -77,7 +78,6 @@ process.on("uncaughtException", (error) => {
   process.exit(1);
 });
 
-// Start the server
 startServer();
 
 export default app;

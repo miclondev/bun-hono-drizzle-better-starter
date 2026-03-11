@@ -1,291 +1,230 @@
-# Express Drizzle Better Auth Starter
+# Documentation Index
 
-A modern Express.js starter template with Drizzle ORM for PostgreSQL and robust authentication.
+Welcome to the Bun + Hono + Drizzle + Better-Auth Starter documentation!
 
-## Technologies Used
+## Quick Links
 
-This project is built with the following technologies and libraries:
+- **[00-OVERVIEW.md](./00-OVERVIEW.md)** - Start here! Project overview and context
+- **[01-GETTING-STARTED.md](./01-GETTING-STARTED.md)** - Setup instructions and first steps
+- **[02-ARCHITECTURE.md](./02-ARCHITECTURE.md)** - System architecture and design patterns
+- **[03-API-REFERENCE.md](./03-API-REFERENCE.md)** - Complete API endpoint documentation
+- **[04-DATABASE.md](./04-DATABASE.md)** - Database schema and operations
+- **[06-MIGRATION-GUIDE.md](./06-MIGRATION-GUIDE.md)** - Express to Hono migration details
 
-### Core
+## Documentation Structure
 
-- [Express.js](https://expressjs.com/) - Fast, unopinionated web framework for Node.js
-- [TypeScript](https://www.typescriptlang.org/) - Typed JavaScript at any scale
+### For New Developers
+
+If you're new to this project, read in this order:
+
+1. **[00-OVERVIEW.md](./00-OVERVIEW.md)** - Understand what this project is
+2. **[01-GETTING-STARTED.md](./01-GETTING-STARTED.md)** - Get the server running
+3. **[02-ARCHITECTURE.md](./02-ARCHITECTURE.md)** - Learn the codebase structure
+4. **[03-API-REFERENCE.md](./03-API-REFERENCE.md)** - Explore available endpoints
+
+### For Existing Developers
+
+If you're familiar with the old Express app:
+
+1. **[06-MIGRATION-GUIDE.md](./06-MIGRATION-GUIDE.md)** - See what changed
+2. **[02-ARCHITECTURE.md](./02-ARCHITECTURE.md)** - Understand new patterns
+3. **[03-API-REFERENCE.md](./03-API-REFERENCE.md)** - API remains the same
+
+### For AI/LLM Assistants
+
+If you're an AI helping with this codebase:
+
+1. **[00-OVERVIEW.md](./00-OVERVIEW.md)** - Project context and purpose
+2. **[02-ARCHITECTURE.md](./02-ARCHITECTURE.md)** - Code organization and patterns
+3. **[06-MIGRATION-GUIDE.md](./06-MIGRATION-GUIDE.md)** - Framework-specific patterns
+4. **[04-DATABASE.md](./04-DATABASE.md)** - Database operations
+
+## Document Summaries
+
+### 00-OVERVIEW.md
+- What this project is and why it exists
+- Migration context (Express → Bun + Hono)
+- Key features and technology stack
+- Project status and roadmap
+- Quick start commands
+
+### 01-GETTING-STARTED.md
+- Prerequisites (Bun, PostgreSQL)
+- Step-by-step setup instructions
+- Database creation and schema push
+- First API requests
+- Troubleshooting common issues
+- Environment variables reference
+
+### 02-ARCHITECTURE.md
+- System architecture diagram
+- Request flow explanation
+- Layer-by-layer breakdown (middleware, routes, controllers, repositories)
+- Code patterns and conventions
+- Type safety approach
+- Security layers
+- Performance optimizations
+
+### 03-API-REFERENCE.md
+- Complete endpoint documentation
+- Request/response examples
+- Authentication flow
+- Error responses
+- Rate limiting details
+- Example workflows
+- Postman collection
+
+### 04-DATABASE.md
+- Database schema (all tables)
+- Schema definitions in code
+- Connection configuration
+- Repository pattern
+- Drizzle ORM operations
+- Migrations and Drizzle Studio
+- Performance optimization
+- Common queries
+
+### 06-MIGRATION-GUIDE.md
+- Express vs Hono comparison
+- Code transformation examples
+- What changed and what stayed the same
+- Dependencies removed/added
+- Performance improvements
+- Migration checklist
+- Common pitfalls
+
+## Additional Resources
+
+### In Parent Directory
+- **[../MIGRATION_STATUS.md](../MIGRATION_STATUS.md)** - Current migration status
+- **[../README.md](../README.md)** - Quick setup guide
+
+### External Resources
+- **Bun:** https://bun.sh/docs
+- **Hono:** https://hono.dev
+- **Drizzle ORM:** https://orm.drizzle.team
+- **better-auth:** https://www.better-auth.com
+
+## Project Files Reference
+
+### Configuration Files
+- `package.json` - Dependencies and scripts
+- `tsconfig.json` - TypeScript configuration
+- `drizzle.config.ts` - Drizzle ORM configuration
+- `.env` - Environment variables (not in git)
+- `.env.example` - Environment template
+
+### Source Code
+- `src/index.ts` - Main application entry
+- `src/config/` - Configuration management
+- `src/db/` - Database layer
+- `src/controllers/` - Business logic
+- `src/middleware/` - Request middleware
+- `src/routes/` - API routes
+- `src/utils/` - Utilities
+- `src/validation/` - Input validation
+
+### Scripts
+- `scripts/setup-db.ts` - Database setup helper
+
+### Documentation
+- `docs/` - This directory
+- `MIGRATION_STATUS.md` - Migration progress
+- `README.md` - Quick reference
+
+## Common Tasks
+
+### Development
+```bash
+bun run dev              # Start development server
+bun run typecheck        # Check TypeScript types
+bun run db:studio        # Open database browser
+```
 
 ### Database
-
-- [PostgreSQL](https://www.postgresql.org/) - Powerful, open-source relational database
-- [Drizzle ORM](https://orm.drizzle.team/) - TypeScript ORM with focus on type safety
-
-### Authentication & Security
-
-- [better-auth](https://github.com/better-auth/better-auth) - Comprehensive authentication library
-- [Helmet](https://helmetjs.github.io/) - Secure Express apps by setting HTTP headers
-- [express-rate-limit](https://github.com/express-rate-limit/express-rate-limit) - Basic rate-limiting middleware
-- [cors](https://github.com/expressjs/cors) - CORS middleware for Express
-
-### Validation & Utilities
-
-- [Joi](https://joi.dev/) - Schema description language and data validator
-- [dotenv](https://github.com/motdotla/dotenv) - Loads environment variables from .env file
-- [uuid](https://github.com/uuidjs/uuid) - Generate RFC-compliant UUIDs
-- [Winston](https://github.com/winstonjs/winston) - Multi-transport async logging library
-
-### Development Tools
-
-- [ESLint](https://eslint.org/) - Pluggable linting utility for JavaScript and TypeScript
-- [Jest](https://jestjs.io/) - JavaScript testing framework
-- [Faker](https://fakerjs.dev/) - Generate realistic test data
-- [Supertest](https://github.com/ladjs/supertest) - HTTP assertions library
-
-## Features
-
-- **Express.js**: Fast, unopinionated, minimalist web framework for Node.js
-- **Drizzle ORM**: TypeScript ORM with a focus on type safety and developer experience
-- **PostgreSQL**: Powerful, open-source object-relational database system
-- **Authentication**: JWT-based authentication with token refresh capabilities
-- **Authorization**: Role-based access control
-- **TypeScript**: Full type safety throughout the application
-- **API Structure**: Well-organized controllers, repositories, and routes
-- **Error Handling**: Centralized error handling with custom error classes
-- **Validation**: Request validation using Joi for robust input sanitization and validation
-- **Logging**: Structured logging for better debugging and monitoring
-- **Security**: Implementation of security best practices with Helmet
-
-## Project Structure
-
-```
-├── src/
-│   ├── config/             # Application configuration
-│   ├── controllers/        # Request handlers
-│   ├── db/                 # Database related code
-│   │   ├── repositories/   # Data access layer
-│   │   └── schema/         # Database schema definitions
-│   ├── middleware/         # Express middleware
-│   ├── routes/             # API routes
-│   └── utils/              # Utility functions
-├── docs/                   # Documentation
-└── ...
+```bash
+bun run setup:db         # Create database
+bun run db:push          # Push schema changes
+bun run db:generate      # Generate migrations
+bun run db:migrate       # Run migrations
 ```
 
-For a detailed explanation of the project architecture and how components work together, see [STRUCTURE.md](./STRUCTURE.md).
-
-## Todo Feature
-
-The repository includes a complete Todo feature implementation with:
-
-- **Schema**: Defined using Drizzle ORM with proper relations
-- **Repository**: Data access layer with CRUD operations
-- **Controller**: Request handlers for all Todo operations
-- **Routes**: RESTful API endpoints with authentication
-- **Validation**: Joi schemas for input validation and sanitization
-
-### Todo Schema
-
-The Todo schema includes:
-
-- `id`: UUID primary key
-- `title`: Required title with max length
-- `description`: Text description
-- `completed`: Boolean flag (default: false)
-- `createdAt`: Timestamp for creation date
-- `updatedAt`: Timestamp for last update
-- `userId`: Foreign key to user
-
-### Todo API Endpoints
-
-| Method | Endpoint                | Description                    | Authentication |
-| ------ | ----------------------- | ------------------------------ | -------------- |
-| GET    | /api/v1/todo            | Get all todos for current user | Required       |
-| GET    | /api/v1/todo/:id        | Get a specific todo by ID      | Required       |
-| POST   | /api/v1/todo            | Create a new todo              | Required       |
-| PUT    | /api/v1/todo/:id        | Update a todo                  | Required       |
-| DELETE | /api/v1/todo/:id        | Delete a todo                  | Required       |
-| PATCH  | /api/v1/todo/:id/toggle | Toggle completion status       | Required       |
-
-## Getting Started
-
-### Prerequisites
-
-- Node.js (v16+)
-- PostgreSQL
-- npm or yarn
-- AWS account (for AWS-related features)
-
-### Installation
-
-1. Clone the repository
-
-   ```bash
-   git clone https://github.com/miclondev/express-drizzle-better-auth-starter.git
-   cd express-drizzle-better-auth-starter
-   ```
-
-2. Install dependencies
-
-   ```bash
-   npm install
-   # or
-   yarn install
-   ```
-
-3. Set up environment variables
-
-   ```bash
-   cp .env.example .env
-   # Edit .env with your database credentials, AWS settings, and other configurations
-   ```
-
-4. Run database migrations
-
-   ```bash
-   npm run db:migrate
-   # or
-   yarn db:migrate
-   ```
-
-5. Start the development server
-   ```bash
-   npm run dev
-   # or
-   yarn dev
-   ```
-
-## Authentication with better-auth
-
-This starter uses [better-auth](https://github.com/better-auth/better-auth) v1.2.7 - a comprehensive authentication library for TypeScript applications. better-auth provides a complete authentication solution with minimal configuration.
-
-### Features
-
-- **Multiple Authentication Methods**:
-
-  - Email and password authentication
-  - Social providers (Google configured by default)
-  - Anonymous authentication
-
-- **Session Management**:
-
-  - Secure cookie-based sessions
-  - Configurable session duration
-  - Cookie cache for improved performance
-
-- **Role-Based Access Control**:
-
-  - `verifyToken` middleware for session validation
-  - `requireRole` middleware for specific role requirements
-  - `requireAnyRole` middleware for flexible role requirements
-
-- **Security Features**:
-
-  - Rate limiting to prevent brute force attacks
-  - CSRF protection
-  - Secure cookie settings
-  - Trusted origins configuration
-
-- **Database Integration**:
-  - Seamless integration with Drizzle ORM
-  - Automatic schema handling
-
-### Auth Configuration
-
-The authentication system is configured in `src/utils/auth.ts` with the following settings:
-
-```typescript
-export const auth = betterAuth({
-  database: drizzleAdapter(db, {
-    provider: "pg",
-    schema: schema,
-  }),
-  plugins: [admin(), anonymous()],
-  session: {
-    cookieCache: {
-      enabled: true,
-      maxAge: 60 * 60 * 24 * 7, // 7 days
-    },
-  },
-  emailAndPassword: {
-    enabled: true,
-  },
-  socialProviders: {
-    google: {
-      clientId: process.env.GOOGLE_CLIENT_ID || "",
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
-    },
-  },
-  trustedOrigins: ["http://localhost:3000"],
-  // Additional configuration...
-});
+### Testing
+```bash
+bun test                 # Run tests
+bun run test:api         # Test API endpoints
 ```
 
-### Auth Endpoints
+## Getting Help
 
-better-auth automatically provides the following endpoints:
+### Documentation Issues
+If you find errors or gaps in documentation:
+1. Check other docs for related information
+2. Review the source code
+3. Test the functionality
+4. Update the docs with correct information
 
-| Method | Endpoint                   | Description                     | Authentication |
-| ------ | -------------------------- | ------------------------------- | -------------- |
-| POST   | /api/auth/register         | Register a new user             | Not Required   |
-| POST   | /api/auth/login            | Login with email and password   | Not Required   |
-| POST   | /api/auth/providers/google | Login with Google               | Not Required   |
-| GET    | /api/auth/session          | Get current session information | Not Required   |
-| POST   | /api/auth/signout          | Sign out and invalidate session | Required       |
+### Code Issues
+If you encounter bugs or unexpected behavior:
+1. Check [01-GETTING-STARTED.md](./01-GETTING-STARTED.md) troubleshooting section
+2. Review [02-ARCHITECTURE.md](./02-ARCHITECTURE.md) for patterns
+3. Check database schema in [04-DATABASE.md](./04-DATABASE.md)
+4. Compare with Express version if needed
 
-## Input Validation with Joi
+### Migration Questions
+If you're migrating from Express:
+1. Read [06-MIGRATION-GUIDE.md](./06-MIGRATION-GUIDE.md) thoroughly
+2. Compare code patterns side-by-side
+3. Test both versions in parallel
+4. Refer to Hono documentation for framework-specific questions
 
-This starter uses Joi for robust input validation and sanitization. Joi provides a powerful schema description language and data validator for JavaScript.
+## Documentation Maintenance
 
-### Validation Features
+### When to Update Docs
 
-- **Input Sanitization**: Automatically trims whitespace from strings and removes unknown fields
-- **Type Validation**: Enforces correct data types for all fields
-- **Length Constraints**: Validates minimum and maximum lengths for string fields
-- **Required Fields**: Ensures required fields are present
-- **Custom Error Messages**: Returns detailed, user-friendly validation error messages
+Update documentation when:
+- Adding new features or endpoints
+- Changing architecture or patterns
+- Fixing bugs that affect documented behavior
+- Adding new dependencies
+- Changing environment variables
+- Updating deployment process
 
-### Validation Implementation
+### Documentation Standards
 
-Validation is implemented through:
+- Use clear, concise language
+- Include code examples
+- Provide both explanation and examples
+- Link to related documentation
+- Keep examples up-to-date with code
+- Use consistent formatting
 
-1. **Middleware**: A validation middleware that processes requests against Joi schemas
-2. **Schema Definitions**: Centralized schema definitions in the validation directory
-3. **Route Integration**: Schemas applied to routes before controller methods are called
+## Version History
 
-### Example Todo Validation Schema
+### v1.0.0 (Current)
+- Initial Bun + Hono implementation
+- Complete migration from Express
+- Full documentation suite
+- Todo feature implementation
+- better-auth integration
 
-```typescript
-// Schema for updating a todo
-export const updateTodoSchema = Joi.object({
-  title: Joi.string().trim().min(1).max(100).messages({
-    "string.empty": "Title cannot be empty",
-    "string.min": "Title must be at least {#limit} characters",
-    "string.max": "Title cannot exceed {#limit} characters",
-  }),
-  description: Joi.string().trim().min(1).max(500).messages({
-    "string.empty": "Description cannot be empty",
-    "string.min": "Description must be at least {#limit} characters",
-    "string.max": "Description cannot exceed {#limit} characters",
-  }),
-  completed: Joi.boolean().messages({
-    "boolean.base": "Completed status must be a boolean",
-  }),
-}).min(1); // At least one field must be provided
-```
+## Next Steps
 
-## Best Practices
+After reading the documentation:
 
-This starter follows these best practices:
+1. **Get Started** - Follow [01-GETTING-STARTED.md](./01-GETTING-STARTED.md)
+2. **Explore Code** - Use [02-ARCHITECTURE.md](./02-ARCHITECTURE.md) as guide
+3. **Test APIs** - Try examples from [03-API-REFERENCE.md](./03-API-REFERENCE.md)
+4. **Build Features** - Use Todo as reference implementation
+5. **Contribute** - Improve docs and code
 
-1. **Separation of Concerns**: Clear separation between controllers, repositories, and routes
-2. **Repository Pattern**: Data access logic is isolated in repositories
-3. **Error Handling**: Centralized error handling with custom error classes
-4. **Validation**: Comprehensive input validation using Joi middleware
-5. **Security**: Implementation of security best practices with Helmet
-6. **Type Safety**: Full TypeScript support throughout the application
-7. **AWS Integration**: Support for AWS services with proper configuration
-8. **Database Migrations**: Structured approach to database schema changes with Drizzle Kit
+## Questions?
 
-## Contributing
+For questions about:
+- **Setup** → [01-GETTING-STARTED.md](./01-GETTING-STARTED.md)
+- **Architecture** → [02-ARCHITECTURE.md](./02-ARCHITECTURE.md)
+- **APIs** → [03-API-REFERENCE.md](./03-API-REFERENCE.md)
+- **Database** → [04-DATABASE.md](./04-DATABASE.md)
+- **Migration** → [06-MIGRATION-GUIDE.md](./06-MIGRATION-GUIDE.md)
 
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
+Happy coding! 🚀

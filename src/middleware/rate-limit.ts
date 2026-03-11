@@ -1,43 +1,67 @@
-import rateLimit from "express-rate-limit";
+import type { Context, Next } from "hono";
 
-/**
- * Standard rate limiter for general API endpoints
- * Limits requests to 100 per 15 minutes per IP address
- */
-export const standardLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 1000, // limit each IP to 1000 requests per windowMs
-  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
-  message: "Too many requests from this IP, please try again after 15 minutes",
-});
+interface RateLimitStore {
+  [key: string]: {
+    count: number;
+    resetTime: number;
+  };
+}
 
-/**
- * Strict rate limiter for sensitive endpoints like authentication
- * Limits requests to 10 per 15 minutes per IP address
- */
-export const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 10, // limit each IP to 10 requests per windowMs
-  standardHeaders: true,
-  legacyHeaders: false,
-  message: "Too many authentication attempts from this IP, please try again after 15 minutes",
-});
+const store: RateLimitStore = {};
 
-/**
- * Custom rate limiter factory function
- * Creates a rate limiter with custom configuration
- */
-export const createRateLimiter = (
-  windowMs: number = 15 * 60 * 1000,
-  max: number = 100,
-  message: string = "Too many requests from this IP, please try again"
-) => {
-  return rateLimit({
-    windowMs,
-    max,
-    standardHeaders: true,
-    legacyHeaders: false,
-    message,
-  });
+export interface RateLimitOptions {
+  windowMs?: number;
+  max?: number;
+}
+
+export const rateLimiter = (options: RateLimitOptions = {}) => {
+  const windowMs = options.windowMs || 60000; // 1 minute default
+  const max = options.max || 100; // 100 requests per window default
+
+  return async (c: Context, next: Next) => {
+    const ip = c.req.header("x-forwarded-for") || c.req.header("x-real-ip") || "unknown";
+    const key = `${ip}`;
+    const now = Date.now();
+
+    // Clean up old entries periodically
+    if (Math.random() < 0.01) {
+      Object.keys(store).forEach((k) => {
+        if (store[k].resetTime < now) {
+          delete store[k];
+        }
+      });
+    }
+
+    if (!store[key] || store[key].resetTime < now) {
+      store[key] = {
+        count: 1,
+        resetTime: now + windowMs,
+      };
+    } else {
+      store[key].count++;
+    }
+
+    const remaining = Math.max(0, max - store[key].count);
+    const resetTime = Math.ceil((store[key].resetTime - now) / 1000);
+
+    c.header("X-RateLimit-Limit", max.toString());
+    c.header("X-RateLimit-Remaining", remaining.toString());
+    c.header("X-RateLimit-Reset", resetTime.toString());
+
+    if (store[key].count > max) {
+      return c.json(
+        {
+          message: "Too many requests, please try again later.",
+        },
+        429
+      );
+    }
+
+    await next();
+  };
 };
+
+export const standardLimiter = rateLimiter({
+  windowMs: 60000, // 1 minute
+  max: 100,
+});

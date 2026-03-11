@@ -1,7 +1,7 @@
-import { database } from "@/config";
 import { logger } from "@utils/logger";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
+import { database } from "@/config";
 
 // Connection string
 const connectionString =
@@ -22,11 +22,12 @@ export const queryClient = postgres(connectionString, {
   max: database.pool.max, // Maximum number of connections in the pool
   idle_timeout: database.pool.idleTimeout, // How many seconds to keep an idle connection before closing (in seconds)
   connect_timeout: database.pool.connectTimeout, // How many seconds to wait for a connection (in seconds)
-  
+
   // Additional options for production environments
-  debug: process.env.NODE_ENV === 'development', // Log queries in development
+  debug: process.env.NODE_ENV === "development", // Log queries in development
   transform: { undefined: null }, // Transform undefined values to null
-  types: { // Custom type parsers if needed
+  types: {
+    // Custom type parsers if needed
     date: {
       to: 1184, // Postgres TIMESTAMPTZ OID
       from: [1082, 1083, 1114, 1184], // Postgres DATE, TIME, TIMESTAMP, TIMESTAMPTZ OIDs
@@ -47,22 +48,22 @@ export const initDatabase = async (): Promise<void> => {
   try {
     // Test the connection
     await queryClient`SELECT 1`;
-    
+
     // Log connection pool information
     logger.info("Database connection pool established successfully", {
       max: database.pool.max,
       idleTimeout: database.pool.idleTimeout,
       connectTimeout: database.pool.connectTimeout,
     });
-    
+
     // Setup periodic health check for the connection pool
-    if (process.env.NODE_ENV === 'production') {
+    if (process.env.NODE_ENV === "production") {
       setInterval(async () => {
         try {
           await queryClient`SELECT 1`;
-          logger.debug('Connection pool health check passed');
+          logger.debug("Connection pool health check passed");
         } catch (error) {
-          logger.error('Connection pool health check failed:', error);
+          logger.error("Connection pool health check failed:", error);
         }
       }, 60000); // Check every minute
     }

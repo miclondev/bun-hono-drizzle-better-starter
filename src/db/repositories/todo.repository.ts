@@ -1,6 +1,6 @@
+import { desc, eq } from "drizzle-orm";
 import { db } from "../config";
-import { todos, Todo, InsertTodo, UpdateTodo } from "../schema/todo.schema";
-import { eq, desc } from "drizzle-orm";
+import { type InsertTodo, type Todo, todos, type UpdateTodo } from "../schema/todo.schema";
 
 export class TodoRepository {
   /**
@@ -52,7 +52,7 @@ export class TodoRepository {
   async toggleComplete(id: string): Promise<Todo | undefined> {
     const todo = await this.findById(id);
     if (!todo) return undefined;
-    
+
     return this.update(id, { completed: !todo.completed });
   }
 }

@@ -1,21 +1,21 @@
-import { Request, Response, NextFunction } from "express";
-import Joi from "joi";
+import type { Context, Next } from "hono";
+import type Joi from "joi";
 
 export const validate = (schema: Joi.ObjectSchema) => {
-  return (req: Request, res: Response, next: NextFunction) => {
-    const { error } = schema.validate(req.body, {
+  return async (c: Context, next: Next) => {
+    const body = await c.req.json();
+    const { error, value } = schema.validate(body, {
       abortEarly: false,
-      stripUnknown: true, // Remove unknown fields (sanitization)
+      stripUnknown: true,
     });
 
     if (error) {
-      const errorMessage = error.details
-        .map((detail) => detail.message)
-        .join(", ");
-      return res.status(400).json({ message: errorMessage });
+      const errorMessage = error.details.map((detail) => detail.message).join(", ");
+      return c.json({ message: errorMessage }, 400);
     }
 
-    // Validated data is available in req.body
-    next();
+    // Store validated and stripped body in context
+    c.set("validatedBody", value);
+    await next();
   };
 };
