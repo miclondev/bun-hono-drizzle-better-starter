@@ -27,6 +27,7 @@ export const verifyToken = async (c: Context, next: Next) => {
     }
 
     c.set("user", session.user as unknown as AuthUser);
+    c.set("userId", session.user.id); // Set userId for easy access in controllers
     c.set("session", session.session);
     await next();
   } catch (error) {
@@ -34,6 +35,9 @@ export const verifyToken = async (c: Context, next: Next) => {
     return c.json({ message: "Unauthorized" }, 401);
   }
 };
+
+// Export alias for consistency
+export const authMiddleware = verifyToken;
 
 export const requireRole = (requiredRole: string) => {
   return async (c: Context, next: Next) => {

@@ -1,5 +1,5 @@
-import { TodoRepository } from "./todo.repository";
-
-export const todoRepository = new TodoRepository();
-
-export { TodoRepository };
+export * from "./video.repository";
+export * from "./template.repository";
+export * from "./automation.repository";
+export * from "./tiktok.repository";
+export * from "./rss-feed.repository";
