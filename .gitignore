@@ -7,6 +7,8 @@ build/
 
 # Archived Express app
 old-express/
+old-express/**/*.test.ts
+old-express/**/*.test.js
 
 # Environment variables
 .env
