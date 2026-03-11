@@ -1,17 +1,17 @@
 {
-  "name": "bung-hono-drizzle-better-starter",
+  "name": "bun-hono-drizzle-better-starter",
   "version": "1.0.0",
   "description": "A modern, high-performance backend API starter built with Bun, Hono, Drizzle ORM, and better-auth",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/miclondev/bung-hono-drizzle-better-starter.git"
+    "url": "git+https://github.com/miclondev/bun-hono-drizzle-better-starter.git"
   },
   "author": "miclondev",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/miclondev/bung-hono-drizzle-better-starter/issues"
+    "url": "https://github.com/miclondev/bun-hono-drizzle-better-starter/issues"
   },
-  "homepage": "https://github.com/miclondev/bung-hono-drizzle-better-starter#readme",
+  "homepage": "https://github.com/miclondev/bun-hono-drizzle-better-starter#readme",
   "scripts": {
     "dev": "bun run --hot src/index.ts",
     "start": "bun src/index.ts",
