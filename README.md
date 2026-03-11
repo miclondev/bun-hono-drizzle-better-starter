@@ -190,7 +190,61 @@ VITE_API_URL=http://localhost:3005
    - Authorize the application
    - Enable auto-posting
 
-## 🔌 API Endpoints
+## � Admin Users
+
+Admin users have unlimited free access to all features without credit limits. This is useful for testing, demonstrations, and platform administration.
+
+### Setting Up Admin Users
+
+**Method 1: Using better-auth Admin API**
+
+```typescript
+// Use the admin plugin to set a user's role
+import { auth } from "./utils/auth";
+
+// Set user role to admin
+await auth.api.setRole({
+  userId: "user_id_here",
+  role: "admin"
+});
+```
+
+**Method 2: Direct Database Update**
+
+```sql
+-- Update user role directly in database
+UPDATE "user" SET role = 'admin' WHERE email = 'admin@example.com';
+```
+
+**Method 3: Using Drizzle Studio**
+
+```bash
+bun run db:studio
+# Navigate to the user table
+# Find your user and set role = 'admin'
+```
+
+### Admin Benefits
+
+- ✅ **Unlimited Credits** - Display balance shows 999,999 credits
+- ✅ **No Credit Deduction** - Video generation, AI scripts, and AI titles are free
+- ✅ **No Subscription Required** - Full access without payment
+- ✅ **Bypass All Limits** - No restrictions on usage
+
+### Admin Check Logic
+
+The credit service automatically detects admin users:
+
+```typescript
+// Admin users bypass all credit checks
+if (await creditService.isAdmin(userId)) {
+  return 999999; // Unlimited credits
+}
+```
+
+Admin status is determined by the `role` field in the user table matching `"admin"`.
+
+## �🔌 API Endpoints
 
 ### Authentication
 - `POST /api/auth/sign-up/email` - Register
