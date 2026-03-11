@@ -23,9 +23,25 @@ export interface DeductCreditsParams {
 
 export const creditService = {
   /**
+   * Check if user is an admin (admins get unlimited free usage)
+   */
+  async isAdmin(userId: string): Promise<boolean> {
+    const result = await db.execute<{ role: string | null }>(
+      sql`SELECT role FROM "user" WHERE id = ${userId}`
+    );
+    
+    return result[0]?.role === "admin";
+  },
+
+  /**
    * Get user's current credit balance
    */
   async getUserBalance(userId: string): Promise<number> {
+    // Admins have unlimited credits
+    if (await this.isAdmin(userId)) {
+      return 999999;
+    }
+
     const result = await db.execute<{ credits: number }>(
       sql`SELECT credits FROM "user" WHERE id = ${userId}`
     );
@@ -69,6 +85,11 @@ export const creditService = {
   async deductCredits(params: DeductCreditsParams): Promise<number> {
     const { userId, amount, type, description, relatedEntityId, relatedEntityType } = params;
 
+    // Admins get unlimited free usage - skip deduction
+    if (await this.isAdmin(userId)) {
+      return 999999; // Return unlimited balance for admins
+    }
+
     // Get current balance
     const currentBalance = await this.getUserBalance(userId);
 
@@ -103,6 +124,11 @@ export const creditService = {
    * Check if user has enough credits
    */
   async hasEnoughCredits(userId: string, amount: number): Promise<boolean> {
+    // Admins always have enough credits
+    if (await this.isAdmin(userId)) {
+      return true;
+    }
+    
     const balance = await this.getUserBalance(userId);
     return balance >= amount;
   },
