@@ -137,11 +137,15 @@ DB_PASSWORD=your_password
 BETTER_AUTH_SECRET=your_secret_key
 BETTER_AUTH_URL=http://localhost:3005
 
+# Google OAuth (Optional)
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+
 # TikTok OAuth
 TIKTOK_CLIENT_KEY=your_client_key
 TIKTOK_CLIENT_SECRET=your_client_secret
 TIKTOK_REDIRECT_URI=http://localhost:3005/api/v1/tiktok/oauth/callback
-FRONTEND_URL=http://localhost:5173
+FRONTEND_URL=http://localhost:8080
 
 # AI
 ANTHROPIC_API_KEY=sk-ant-api03-...
