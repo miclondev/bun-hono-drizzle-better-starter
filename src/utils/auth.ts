@@ -3,6 +3,7 @@ import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { admin, anonymous } from "better-auth/plugins";
 import { db } from "@/db/config";
 import * as schema from "@/db/schema";
+import { allowedOrigins } from "@/config/cors";
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
@@ -39,11 +40,7 @@ export const auth = betterAuth({
       enabled: !!(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET),
     },
   },
-  trustedOrigins: [
-    "http://localhost:3000",
-    "http://localhost:8080", // Frontend dev server
-    process.env.FRONTEND_URL || "",
-  ].filter(Boolean),
+  trustedOrigins: allowedOrigins,
   rateLimit: {
     window: 10, // time in seconds
     max: 100,

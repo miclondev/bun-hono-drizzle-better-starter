@@ -4,6 +4,7 @@ import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { secureHeaders } from "hono/secure-headers";
 import { server } from "@/config";
+import { allowedOrigins } from "@/config/cors";
 import { standardLimiter } from "@/middleware/rate-limit";
 import { requestLogger } from "@/middleware/request-logger";
 import routes from "@/routes";
@@ -18,11 +19,7 @@ app.use("*", secureHeaders());
 app.use(
   "*",
   cors({
-    origin: [
-      "http://localhost:3000",
-      "http://localhost:8080", // Frontend dev server
-      process.env.FRONTEND_URL || "",
-    ].filter(Boolean),
+    origin: allowedOrigins,
     credentials: true,
   })
 );
