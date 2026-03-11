@@ -155,9 +155,8 @@ VITE_API_URL=http://localhost:3005
 
 ## 📚 Documentation
 
-- [API Documentation](./docs/API.md) - Complete API reference
-- [Frontend Guide](./docs/FRONTEND.md) - Frontend architecture and components
-- [AI Features](./docs/AI_FEATURES.md) - AI script generation guide
+- [API Documentation](./docs/API.md) - Complete API reference with all endpoints
+- [Authentication Guide](./docs/AUTHENTICATION.md) - better-auth setup and configuration
 - [Database Schema](./docs/DATABASE.md) - Database structure and relationships
 - [Deployment Guide](./docs/DEPLOYMENT.md) - Production deployment instructions
 
