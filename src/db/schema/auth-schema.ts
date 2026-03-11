@@ -13,6 +13,7 @@ export const user = pgTable("user", {
   banReason: text("ban_reason"),
   banExpires: timestamp("ban_expires"),
   isAnonymous: boolean("is_anonymous"),
+  // credits and plan are managed by better-auth additionalFields
 });
 
 export const session = pgTable("session", {

@@ -11,6 +11,7 @@ import routes from "@/routes";
 import { auth } from "@/utils/auth";
 import { errorHandler, notFoundHandler } from "@/utils/error-handler";
 import { logger } from "@/utils/logger";
+import { webhookController } from "@/controllers/webhook.controller";
 
 const app = new Hono();
 
@@ -23,6 +24,10 @@ app.use(
     credentials: true,
   })
 );
+
+// Stripe webhook endpoint - MUST be before rate limiting and body parsing
+// This endpoint is PUBLIC and does not require authentication
+app.post("/api/webhooks/stripe", webhookController.handleStripeWebhook);
 
 // Rate limiting
 app.use("*", standardLimiter);

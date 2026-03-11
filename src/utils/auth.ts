@@ -12,6 +12,22 @@ export const auth = betterAuth({
     schema: schema,
   }),
   plugins: [admin(), anonymous()],
+  user: {
+    additionalFields: {
+      credits: {
+        type: "number",
+        required: false,
+        defaultValue: 1, // 1 free credit for new users to test
+        input: false, // don't allow user to set credits during signup
+      },
+      plan: {
+        type: ["none", "starter", "creator", "agency"],
+        required: false,
+        defaultValue: "none",
+        input: false, // don't allow user to set plan during signup
+      },
+    },
+  },
   session: {
     cookieCache: {
       enabled: true,
