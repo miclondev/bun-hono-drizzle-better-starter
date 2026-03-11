@@ -6,6 +6,7 @@ import * as schema from "@/db/schema";
 import { allowedOrigins } from "@/config/cors";
 
 export const auth = betterAuth({
+  baseURL: process.env.BETTER_AUTH_URL || "http://localhost:3005",
   database: drizzleAdapter(db, {
     provider: "pg",
     schema: schema,
@@ -37,7 +38,8 @@ export const auth = betterAuth({
     google: {
       clientId: process.env.GOOGLE_CLIENT_ID || "",
       clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
-      enabled: !!(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET),
+      // Always enable route (will show error if credentials missing)
+      // enabled: !!(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET),
     },
   },
   trustedOrigins: allowedOrigins,
