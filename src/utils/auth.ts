@@ -41,7 +41,7 @@ export const auth = betterAuth({
   },
   trustedOrigins: [
     "http://localhost:3000",
-    "http://localhost:5173", // Vite dev server
+    "http://localhost:8080", // Frontend dev server
     process.env.FRONTEND_URL || "",
   ].filter(Boolean),
   rateLimit: {
