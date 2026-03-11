@@ -18,22 +18,40 @@ export const auth = betterAuth({
   },
   emailAndPassword: {
     enabled: true,
+    requireEmailVerification: false, // Set to true when email service is configured
+    sendResetPassword: async ({ user, url }) => {
+      // TODO: Implement email sending when email service is configured
+      // For now, log the reset URL (development only)
+      console.log(`Password reset URL for ${user.email}: ${url}`);
+      
+      // In production, send email:
+      // await sendEmail({
+      //   to: user.email,
+      //   subject: "Reset your password",
+      //   html: `Click here to reset your password: ${url}`
+      // });
+    },
   },
   socialProviders: {
     google: {
       clientId: process.env.GOOGLE_CLIENT_ID || "",
       clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
+      enabled: !!(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET),
     },
   },
-  trustedOrigins: ["http://localhost:3000"],
+  trustedOrigins: [
+    "http://localhost:3000",
+    "http://localhost:5173", // Vite dev server
+    process.env.FRONTEND_URL || "",
+  ].filter(Boolean),
   rateLimit: {
-    window: 10, // time in seconds,
+    window: 10, // time in seconds
     max: 100,
   },
   advanced: {
     defaultCookieAttributes: {
-      secure: true,
-      sameSite: "none",
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
     },
   },
 });

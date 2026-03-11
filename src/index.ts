@@ -18,7 +18,11 @@ app.use("*", secureHeaders());
 app.use(
   "*",
   cors({
-    origin: ["http://localhost:3000"],
+    origin: [
+      "http://localhost:3000",
+      "http://localhost:5173", // Vite dev server
+      process.env.FRONTEND_URL || "",
+    ].filter(Boolean),
     credentials: true,
   })
 );
