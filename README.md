@@ -1,345 +1,317 @@
-# Bun + Hono + Drizzle + Better-Auth Starter
+# ViralSak - AI-Powered Short-Form Video Generator
 
-A modern, high-performance backend API starter built with Bun runtime, Hono web framework, Drizzle ORM, and better-auth for authentication. Migrated from Express.js to leverage Bun's speed and Hono's lightweight architecture.
+A full-stack application for generating viral short-form videos using AI. Create engaging TikTok-style videos with automated script generation, customizable templates, and scheduled posting.
 
-## ✨ Features
+## 🚀 Features
 
-- ⚡ **Bun Runtime** - 3x faster than Node.js
-- 🚀 **Hono Framework** - Ultrafast web framework (10x faster than Express)
-- 🗄️ **Drizzle ORM** - Type-safe database operations with PostgreSQL
-- 🔐 **better-auth** - Complete authentication solution with sessions
-- ✅ **Joi Validation** - Request validation middleware
-- 📝 **Winston Logger** - Structured logging
-- 🛡️ **Security** - Rate limiting, CORS, secure headers
-- 🧪 **Comprehensive Tests** - 17/17 tests passing with Bun test runner
-- 🎨 **Biome** - Fast linting and formatting (10-100x faster than ESLint/Prettier)
-- 📚 **Full Documentation** - Complete guides in `/docs`
+### Core Features
+- **AI Script Generation** - Generate engaging video scripts using Anthropic Claude
+- **Video Templates** - Save and reuse video configurations (voice, background, text style)
+- **Automation Studio** - Schedule automated video generation with custom frequencies
+- **TikTok Integration** - OAuth authentication and direct posting to TikTok
+- **RSS Feed Integration** - Generate videos from trending topics
+- **Dashboard Analytics** - Track video performance and engagement
 
-## Prerequisites
+### Technical Features
+- **Full-Stack TypeScript** - Type-safe frontend and backend
+- **Real-time Updates** - React Query for optimistic updates
+- **Modern UI** - Beautiful interface with Framer Motion animations
+- **Authentication** - Secure auth with better-auth
+- **Database** - PostgreSQL with Drizzle ORM
+- **API** - RESTful API with 26 endpoints
 
-- [Bun](https://bun.sh) v1.0.0 or higher
-- PostgreSQL 14 or higher
+## 📁 Project Structure
 
-## Setup Instructions
-
-### 1. Start PostgreSQL
-
-Make sure PostgreSQL is running on your system:
-
-```bash
-# macOS with Homebrew
-brew services start postgresql@14
-
-# Or check if it's already running
-psql -U postgres -c "SELECT version();"
+```
+viralsak/
+├── viralsak-backend/          # Backend API (Bun + Hono)
+│   ├── src/
+│   │   ├── controllers/       # API controllers
+│   │   ├── db/               # Database schemas & repositories
+│   │   ├── middleware/       # Auth & validation middleware
+│   │   ├── routes/           # API routes
+│   │   ├── services/         # Business logic (AI service)
+│   │   └── validation/       # Joi validation schemas
+│   └── drizzle/              # Database migrations
+│
+└── viralsak-frontend/         # Frontend (React + Vite)
+    ├── src/
+    │   ├── components/       # Reusable UI components
+    │   ├── contexts/         # React contexts (Auth)
+    │   ├── hooks/            # React Query hooks
+    │   ├── pages/            # Page components
+    │   ├── types/            # TypeScript type definitions
+    │   └── constants/        # API endpoints & constants
+    └── public/               # Static assets
 ```
 
-### 2. Create Database
+## 🛠️ Tech Stack
 
-Create the `todos` database:
+### Backend
+- **Runtime**: Bun
+- **Framework**: Hono
+- **Database**: PostgreSQL
+- **ORM**: Drizzle
+- **Authentication**: better-auth
+- **AI**: Anthropic Claude 3.5 Sonnet
+- **Validation**: Joi
+
+### Frontend
+- **Framework**: React 18
+- **Build Tool**: Vite
+- **Styling**: TailwindCSS + shadcn/ui
+- **State Management**: React Query (TanStack Query)
+- **Animations**: Framer Motion
+- **Routing**: React Router
+- **i18n**: react-i18next
+- **Code Quality**: Biome
+
+## 📦 Installation
+
+### Prerequisites
+- Node.js 18+ or Bun
+- PostgreSQL 14+
+- pnpm (for frontend)
+- Anthropic API key
+- TikTok Developer account (optional)
+
+### Backend Setup
 
 ```bash
-psql -U postgres -c "CREATE DATABASE todos;"
-```
+cd viralsak-backend
 
-Or use the provided script:
-
-```bash
-bun run scripts/setup-db.ts
-```
-
-### 3. Install Dependencies
-
-Dependencies should already be installed, but if needed:
-
-```bash
+# Install dependencies
 bun install
-```
 
-### 4. Configure Environment
-
-Copy `.env.example` to `.env` and update if needed:
-
-```bash
+# Copy environment file
 cp .env.example .env
-```
 
-Update the `BETTER_AUTH_SECRET` with a secure random string (at least 32 characters):
+# Edit .env and add your credentials:
+# - ANTHROPIC_API_KEY
+# - Database credentials
+# - TikTok OAuth credentials (optional)
 
-```bash
-# Generate a secure secret
-openssl rand -base64 32
-```
-
-### 5. Push Database Schema
-
-Create the database tables:
-
-```bash
+# Run database migrations
 bun run db:push
-```
 
-### 6. Start Development Server
-
-```bash
+# Start development server
 bun run dev
 ```
 
-The server will start on http://localhost:3000
+Backend will run on `http://localhost:3005`
 
-## Available Scripts
-
-### Development
-- `bun run dev` - Start development server with hot reload
-- `bun run start` - Start production server
-- `bun run build` - Build for production
-- `bun run typecheck` - Run TypeScript type checking
-
-### Database
-- `bun run setup:db` - Create database (if not exists)
-- `bun run db:push` - Push schema changes to database
-- `bun run db:generate` - Generate migrations
-- `bun run db:migrate` - Run migrations
-- `bun run db:studio` - Open Drizzle Studio
-- `bun run seed` - Seed database with test data
-
-### Testing
-- `bun test` - Run all tests
-- `bun run test:api` - Test API endpoints (requires server running)
-
-### Code Quality
-- `bun run check` - Run Biome linting and formatting checks
-- `bun run check:fix` - Auto-fix all linting and formatting issues
-- `bun run lint` - Run linter only
-- `bun run lint:fix` - Fix linting issues
-- `bun run format` - Check formatting
-- `bun run format:fix` - Fix formatting
-
-## API Endpoints
-
-### Authentication (better-auth)
-
-- `POST /api/auth/register` - Register new user
-- `POST /api/auth/login` - Login with email/password
-- `GET /api/auth/session` - Get current session
-- `POST /api/auth/signout` - Sign out
-
-### Todos (Protected)
-
-All todo endpoints require authentication.
-
-- `GET /api/v1/todo` - Get all todos for current user
-- `GET /api/v1/todo/:id` - Get specific todo
-- `POST /api/v1/todo` - Create new todo
-- `PUT /api/v1/todo/:id` - Update todo
-- `DELETE /api/v1/todo/:id` - Delete todo
-- `PATCH /api/v1/todo/:id/toggle` - Toggle completion status
-
-### Health
-
-- `GET /health` - Health check endpoint
-
-## Project Structure
-
-```
-drizzle-better-auth-starter/
-├── src/
-│   ├── config/          # Environment configuration
-│   ├── controllers/     # Request handlers (Hono Context)
-│   ├── db/
-│   │   ├── schema/      # Drizzle schemas (auth + todos)
-│   │   ├── repositories/# Data access layer
-│   │   └── config.ts    # Database connection pool
-│   ├── middleware/      # Hono middleware
-│   │   ├── auth.ts      # Authentication & authorization
-│   │   ├── validation.ts# Joi validation
-│   │   ├── rate-limit.ts# Rate limiting
-│   │   └── request-logger.ts # Request logging
-│   ├── routes/          # API routes
-│   ├── utils/           # Utilities (auth, logger, error handler)
-│   ├── validation/      # Joi validation schemas
-│   └── index.ts         # Application entry point
-├── tests/               # Bun test suite
-│   ├── repositories/    # Repository tests (17/17 passing)
-│   ├── middleware/      # Middleware tests
-│   └── integration/     # API integration tests
-├── scripts/             # Utility scripts
-│   ├── setup-db.ts      # Database setup
-│   ├── seed-db.ts       # Data seeding
-│   └── test-api.ts      # API testing
-├── docs/                # Comprehensive documentation
-│   ├── 00-OVERVIEW.md
-│   ├── 01-GETTING-STARTED.md
-│   ├── 02-ARCHITECTURE.md
-│   ├── 03-API-REFERENCE.md
-│   ├── 04-DATABASE.md
-│   ├── 06-MIGRATION-GUIDE.md
-│   ├── 08-TESTING.md
-│   └── 09-LINTING-FORMATTING.md
-├── old-express/         # Archived Express.js app (gitignored)
-├── biome.json           # Biome configuration
-├── drizzle.config.ts    # Drizzle ORM configuration
-├── tsconfig.json        # TypeScript configuration
-└── package.json         # Dependencies and scripts
-```
-
-## Quick Start
+### Frontend Setup
 
 ```bash
-# 1. Install dependencies
-bun install
+cd viralsak-frontend
 
-# 2. Setup database
-bun run setup:db
-bun run db:push
+# Install dependencies (must use pnpm)
+pnpm install
 
-# 3. Start development server
-bun run dev
+# Copy environment file
+cp .env.example .env
 
-# 4. Run tests
+# Start development server
+pnpm dev
+```
+
+Frontend will run on `http://localhost:5173`
+
+## 🔑 Environment Variables
+
+### Backend (.env)
+
+```bash
+# Server
+NODE_ENV=development
+PORT=3005
+
+# Database
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=viralsak
+DB_USER=postgres
+DB_PASSWORD=your_password
+
+# Authentication
+BETTER_AUTH_SECRET=your_secret_key
+BETTER_AUTH_URL=http://localhost:3005
+
+# TikTok OAuth
+TIKTOK_CLIENT_KEY=your_client_key
+TIKTOK_CLIENT_SECRET=your_client_secret
+TIKTOK_REDIRECT_URI=http://localhost:3005/api/v1/tiktok/oauth/callback
+FRONTEND_URL=http://localhost:5173
+
+# AI
+ANTHROPIC_API_KEY=sk-ant-api03-...
+```
+
+### Frontend (.env)
+
+```bash
+VITE_API_URL=http://localhost:3005
+```
+
+## 📚 Documentation
+
+- [API Documentation](./docs/API.md) - Complete API reference
+- [Frontend Guide](./docs/FRONTEND.md) - Frontend architecture and components
+- [AI Features](./docs/AI_FEATURES.md) - AI script generation guide
+- [Database Schema](./docs/DATABASE.md) - Database structure and relationships
+- [Deployment Guide](./docs/DEPLOYMENT.md) - Production deployment instructions
+
+## 🎯 Quick Start Guide
+
+1. **Generate Your First Video**
+   - Navigate to `/generator`
+   - Enter a topic (e.g., "Why coffee boosts productivity")
+   - Click "Generate" to create an AI script
+   - Select voice, background, and text style
+   - Click "Generate Video"
+
+2. **Create a Template**
+   - Go to Video Generator
+   - Configure your preferred settings
+   - Save as a template for reuse
+
+3. **Set Up Automation**
+   - Navigate to `/automations`
+   - Click "New Automation"
+   - Set topic, frequency, and template
+   - Enable automation
+
+4. **Connect TikTok**
+   - Go to `/settings`
+   - Click "Connect Account" under TikTok
+   - Authorize the application
+   - Enable auto-posting
+
+## 🔌 API Endpoints
+
+### Authentication
+- `POST /api/auth/sign-up/email` - Register
+- `POST /api/auth/sign-in/email` - Login
+- `POST /api/auth/sign-out` - Logout
+- `GET /api/auth/get-session` - Get session
+
+### Videos
+- `GET /api/v1/videos` - List videos
+- `POST /api/v1/videos` - Create video
+- `GET /api/v1/videos/:id` - Get video
+- `PATCH /api/v1/videos/:id` - Update video
+- `DELETE /api/v1/videos/:id` - Delete video
+- `POST /api/v1/videos/:id/regenerate` - Regenerate video
+- `POST /api/v1/videos/:id/post-to-tiktok` - Post to TikTok
+
+### AI Features
+- `POST /api/v1/videos/ai/generate-script` - Generate script
+- `POST /api/v1/videos/ai/generate-title` - Generate title
+- `POST /api/v1/videos/ai/improve-script` - Improve script
+
+### Templates
+- `GET /api/v1/templates` - List templates
+- `POST /api/v1/templates` - Create template
+- `DELETE /api/v1/templates/:id` - Delete template
+
+### Automations
+- `GET /api/v1/automations` - List automations
+- `POST /api/v1/automations` - Create automation
+- `PATCH /api/v1/automations/:id` - Update automation
+- `DELETE /api/v1/automations/:id` - Delete automation
+- `POST /api/v1/automations/:id/toggle` - Toggle active status
+
+### TikTok
+- `GET /api/v1/tiktok/oauth-url` - Get OAuth URL
+- `GET /api/v1/tiktok/oauth/callback` - OAuth callback
+- `GET /api/v1/tiktok/status` - Connection status
+- `DELETE /api/v1/tiktok/disconnect` - Disconnect account
+
+### RSS Feeds
+- `GET /api/v1/rss-feeds` - List feeds
+- `POST /api/v1/rss-feeds` - Create feed
+- `DELETE /api/v1/rss-feeds/:id` - Delete feed
+
+### Stats
+- `GET /api/v1/stats/dashboard` - Dashboard statistics
+
+## 🧪 Testing
+
+### Frontend
+```bash
+cd viralsak-frontend
+
+# Run tests
+pnpm test
+
+# Type check
+pnpm exec tsc --noEmit
+
+# Lint
+pnpm lint
+
+# Format
+pnpm format
+```
+
+### Backend
+```bash
+cd viralsak-backend
+
+# Run tests
 bun test
 
-# 5. Check code quality
-bun run check
+# Type check
+bun run type-check
 ```
 
-Server runs at `http://localhost:3000`
+## 🚢 Deployment
 
-## Testing
+### Backend Deployment
 
-This project has comprehensive test coverage using Bun's built-in test runner:
+1. Set up PostgreSQL database
+2. Configure environment variables
+3. Run migrations: `bun run db:push`
+4. Build: `bun run build`
+5. Start: `bun run start`
 
-```bash
-# Run all tests (17/17 passing)
-bun test
+### Frontend Deployment
 
-# Run specific test suite
-bun test tests/repositories/
+1. Update `VITE_API_URL` in `.env`
+2. Build: `pnpm build`
+3. Deploy `dist/` folder to hosting service
 
-# Test API endpoints (requires server running)
-bun run test:api
+Recommended platforms:
+- Backend: Railway, Render, Fly.io
+- Frontend: Vercel, Netlify, Cloudflare Pages
+- Database: Neon, Supabase, Railway
 
-# Seed database with test data
-bun run seed
-```
-
-**Test Coverage:**
-- ✅ Repository tests: 17/17 passing
-- ✅ Middleware tests: All passing
-- ✅ Integration tests: All passing
-
-See `docs/08-TESTING.md` for detailed testing guide.
-
-## Code Quality
-
-Biome is configured for fast linting and formatting:
-
-```bash
-# Check everything
-bun run check
-
-# Auto-fix all issues
-bun run check:fix
-```
-
-See `docs/09-LINTING-FORMATTING.md` for Biome guide.
-
-## Documentation
-
-Comprehensive documentation is available in the `/docs` folder:
-
-- **[00-OVERVIEW.md](docs/00-OVERVIEW.md)** - Project overview and architecture
-- **[01-GETTING-STARTED.md](docs/01-GETTING-STARTED.md)** - Setup and installation guide
-- **[02-ARCHITECTURE.md](docs/02-ARCHITECTURE.md)** - Architecture and design patterns
-- **[03-API-REFERENCE.md](docs/03-API-REFERENCE.md)** - Complete API documentation
-- **[04-DATABASE.md](docs/04-DATABASE.md)** - Database schema and operations
-- **[06-MIGRATION-GUIDE.md](docs/06-MIGRATION-GUIDE.md)** - Express to Bun/Hono migration
-- **[08-TESTING.md](docs/08-TESTING.md)** - Testing guide and best practices
-- **[09-LINTING-FORMATTING.md](docs/09-LINTING-FORMATTING.md)** - Biome setup and usage
-
-## Performance
-
-This stack is optimized for speed:
-
-- **Bun Runtime**: 3x faster than Node.js
-- **Hono Framework**: 10x faster than Express.js
-- **Biome**: 10-100x faster than ESLint/Prettier
-- **Drizzle ORM**: Minimal overhead, type-safe queries
-
-**Benchmarks:**
-- Server startup: ~50ms
-- Test suite (17 tests): ~140ms
-- Code quality check (26 files): ~7ms
-
-## Migration from Express
-
-This project was migrated from Express.js to Bun + Hono. The old Express app is archived in `old-express/` (gitignored).
-
-**Key changes:**
-- `req, res` → `Context (c)`
-- Express middleware → Hono middleware
-- `app.use()` → `app.use()` (similar API)
-- better-auth integration updated for Hono
-
-See `docs/06-MIGRATION-GUIDE.md` for complete migration details.
-
-## Troubleshooting
-
-### Database Connection Issues
-
-If you see "database does not exist" error:
-1. Make sure PostgreSQL is running: `brew services start postgresql@14`
-2. Create the database: `bun run setup:db`
-3. Push schema: `bun run db:push`
-
-### Port Already in Use
-
-If port 3000 is already in use:
-1. Update `PORT` in `.env` file
-2. Or stop the conflicting process
-
-### Better-Auth Warnings
-
-Generate and set a secure secret:
-```bash
-openssl rand -base64 32
-# Add to .env: BETTER_AUTH_SECRET="<generated-secret>"
-```
-
-### TypeScript Errors
-
-Path alias errors are expected in the IDE but work at runtime with Bun:
-```bash
-# Verify TypeScript compilation
-bun run typecheck
-```
-
-### Tests Failing
-
-Ensure database is set up and server is not running on port 3000:
-```bash
-bun run setup:db
-bun run db:push
-bun test
-```
-
-## Contributing
+## 🤝 Contributing
 
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes
-4. Run tests: `bun test`
-5. Check code quality: `bun run check:fix`
-6. Submit a pull request
+4. Run tests and linting
+5. Submit a pull request
 
-## License
+## 📄 License
 
-MIT
+MIT License - see LICENSE file for details
 
-## Acknowledgments
+## 🆘 Support
 
-- Built with [Bun](https://bun.sh)
-- Powered by [Hono](https://hono.dev)
-- Database with [Drizzle ORM](https://orm.drizzle.team)
-- Auth by [better-auth](https://better-auth.com)
-- Linting by [Biome](https://biomejs.dev)
+For issues and questions:
+- GitHub Issues: [Create an issue](https://github.com/yourusername/viralsak/issues)
+- Documentation: [Read the docs](./docs/)
+
+## 🎉 Acknowledgments
+
+- [Anthropic](https://anthropic.com) - AI script generation
+- [TikTok Developers](https://developers.tiktok.com) - TikTok API
+- [shadcn/ui](https://ui.shadcn.com) - UI components
+- [Hono](https://hono.dev) - Web framework
+- [Drizzle](https://orm.drizzle.team) - ORM
+
+---
+
+Built with ❤️ using modern web technologies
